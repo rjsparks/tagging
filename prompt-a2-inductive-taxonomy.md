@@ -1,10 +1,10 @@
 # Prompt A2 — Inductive (bottom-up) tag vocabulary
 
-Run once, after building the stratified sample described in README.md. Model: a
+Run once, after building the stratified sample described in `README.md` §9. Model: a
 frontier reasoning model with a long context window, temperature 0.
 
 The sample is ~1,200 RFC records (title + date + status + abstract-or-body-excerpt),
-stratified by decade, status, and stream as described in README.md.
+stratified by decade, status, and stream as described in `README.md` §9.
 
 **Strip `area`, `stream`, `source`, and `keywords` from the records before
 sending them.** All four come from the datatracker and including them would collapse
