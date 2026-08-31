@@ -1,0 +1,603 @@
+# Empirical structure of the RFC corpus
+
+Joined from `../rfc/rfc-index.xml` (area, stream, working-group acronym) and the
+per-RFC `../rfc/rfcNNNN.json` files (`source` — the working group's **full name**,
+100% coverage). Counts are published documents; not-issued numbers are excluded.
+Regenerate with `python3 seed/build-seed.py`.
+
+The `source` field mixes levels: "Legacy", "INDEPENDENT", "IAB" and
+"IETF - NON WORKING GROUP" are streams or catch-alls, while the rest are named
+working and research groups. Together those four buckets hold 3,372 documents —
+just over a third of the corpus, with no working group to inherit a tag from.
+
+## Streams (from XML, 100% coverage of published RFCs)
+
+- `IETF` — 7242
+- `Legacy` — 1893
+- `INDEPENDENT` — 435
+- `IAB` — 134
+- `IRTF` — 127
+- `Editorial` — 3
+
+## Areas (from XML, 64.2% coverage; includes retired area codes)
+
+- `rtg` — 1385
+- `ops` — 924
+- `int` — 902
+- `sec` — 805
+- `app` — 544
+- `art` — 427
+- `rai` — 415
+- `wit` — 379
+- `tsv` — 357
+- `mgt` — 58
+- `gen` — 53
+- `usv` — 33
+- `sub` — 19
+- `ops-old` — 11
+- `osi` — 4
+- `ipng` — 2
+
+## Groups and buckets by document count
+
+Format: full name — count · `acronym` · dominant area
+
+- Legacy — 1893
+- IETF - NON WORKING GROUP — 910
+- INDEPENDENT — 435
+- Multiprotocol Label Switching — 197 · `mpls` · rtg
+- IAB — 134
+- Inter-Domain Routing — 116 · `idr` · rtg
+- Audio/Video Transport — 115 · `avt` · rai
+- Common Control and Measurement Plane — 112 · `ccamp` · rtg
+- Dynamic Host Configuration — 108 · `dhc` · int
+- Transport and Services Working Group — 92 · `tsvwg` · wit
+- IPv6 Operations — 89 · `v6ops` · ops
+- Domain Name System Operations — 85 · `dnsop` · ops
+- Path Computation Element — 77 · `pce` · rtg
+- Point-to-Point Protocol Extensions — 75 · `pppext` · int
+- Session Initiation Protocol — 75 · `sip` · rai
+- IP Performance Measurement — 71 · `ippm` · ops
+- Open Shortest Path First IGP — 71 · `ospf` · rtg
+- Transport Layer Security — 71 · `tls` · sec
+- Public-Key Infrastructure (X.509) — 70 · `pkix` · sec
+- Multiparty Multimedia Session Control — 69 · `mmusic` · art
+- Limited Additional Mechanisms for PKIX and SMIME — 63 · `lamps` · sec
+- IPv6 Maintenance — 63 · `6man` · int
+- DNS Extensions — 62 · `dnsext` · int
+- Operations and Management Area Working Group — 59 · `opsawg` · ops
+- Session Initiation Proposal Investigation — 55 · `sipping` · rai
+- HTTP — 55 · `httpbis` · wit
+- IS-IS for IP Internets — 55 · `isis` · rtg
+- S/MIME Mail Security — 52 · `smime` · sec
+- BGP Enabled ServiceS — 52 · `bess` · rtg
+- IPNG — 51 · `ipngwg` · int
+- Pseudowire Emulation Edge to Edge — 50 · `pwe3` · rtg
+- TCP Maintenance and Minor Extensions — 49 · `tcpm` · wit
+- Benchmarking Methodology — 47 · `bmwg` · ops
+- Protocols for IP Multicast — 47 · `pim` · rtg
+- Network File System Version 4 — 46 · `nfsv4` · wit
+- Link State Routing — 46 · `lsr` · rtg
+- Transparent Interconnection of Lots of Links — 44 · `trill` · rtg
+- IP Security Maintenance and Extensions — 44 · `ipsecme` · sec
+- Audio/Video Transport Core Maintenance — 42 · `avtcore` · wit
+- Secure Inter-Domain Routing — 41 · `sidr` · rtg
+- Mobile Ad-hoc Networks — 41 · `manet` · rtg
+- IP Security Protocol — 41 · `ipsec` · sec
+- Network Configuration — 39 · `netconf` · ops
+- Network Modeling — 39 · `netmod` · ops
+- Web Authorization Protocol — 36 · `oauth` · sec
+- IP Version 6 Working Group — 35 · `ipv6` · int
+- Traffic Engineering Architecture and Signaling — 35 · `teas` · rtg
+- ART Area General Applications Working Group — 35 · `appsawg` · art
+- RADIUS EXTensions — 34 · `radext` · sec
+- Session Initiation Protocol Core — 34 · `sipcore` · art
+- Softwires — 33 · `softwire` · int
+- Robust Header Compression — 33 · `rohc` · tsv
+- Geographic Location/Privacy — 32 · `geopriv` · rai
+- Routing Area Working Group — 31 · `rtgwg` · rtg
+- Constrained RESTful Environments — 31 · `core` · wit
+- Internetworking Over NBMA — 31 · `ion` · int
+- Diameter Maintenance and Extensions — 31 · `dime` · ops
+- Global Routing Operations — 31 · `grow` · ops
+- Telephone Number Mapping — 29 · `enum` · rai
+- Host Identity Protocol — 29 · `hip` · int
+- IP Flow Information Export — 29 · `ipfix` · ops
+- Layer 3 Virtual Private Networks — 29 · `l3vpn` · rtg
+- MBONE Deployment — 29 · `mboned` · ops
+- Registration Protocols Extensions — 29 · `regext` · ops
+- SIP for Instant Messaging and Presence Leveraging Extensions — 28 · `simple` · rai
+- Locator/ID Separation Protocol — 28 · `lisp` · rtg
+- Internet Fax — 27 · `fax` · app
+- Sieve Mail Filtering Language — 27 · `sieve` · app
+- Common Authentication Technology Next Generation — 26 · `kitten` · sec
+- Reliable Multicast Transport — 26 · `rmt` · tsv
+- Routing Over Low power and Lossy networks — 26 · `roll` · rtg
+- IP Storage — 25 · `ips` · tsv
+- Crypto Forum — 25
+- Bidirectional Forwarding Detection — 24 · `bfd` · rtg
+- Remote Network Monitoring — 24 · `rmonmib` · ops
+- Behavior Engineering for Hindrance Avoidance — 24 · `behave` · tsv
+- Deterministic Networking — 23 · `detnet` · rtg
+- IPv6 over Networks of Resource-constrained Nodes — 23 · `6lo` · int
+- Layer Two Tunneling Protocol Extensions — 23 · `l2tpext` · rtg
+- Emergency Context Resolution with Internet Technologies — 22 · `ecrit` · art
+- SNMP Version 3 — 22 · `snmpv3` · ops
+- Email mailstore and eXtensions To Revise or Amend — 22 · `extra` · art
+- Mobility for IPv4 — 22 · `mip4` · int
+- Kerberos — 22 · `krb-wg` · sec
+- SIDR Operations — 21 · `sidrops` · ops
+- Pseudowire And LDP-enabled Services — 20 · `pals` · rtg
+- Mobility for IPv6 — 20 · `mip6` · int
+- Enhancements to Internet email to Support Diverse Service Environments — 20 · `lemonade` · app
+- SNMP Version 2 — 20 · `snmpv2` · mgt
+- Layer 2 Virtual Private Networks — 20 · `l2vpn` · rtg
+- Information-Centric Networking — 19
+- Metric Blocks for use with RTCP's Extended Report Framework — 19 · `xrblock` · art
+- Operational Security Capabilities for IP Network Infrastructure — 18 · `opsec` · ops
+- Internet Printing Protocol — 18 · `ipp` · app
+- Multicast Security — 18 · `msec` · sec
+- Email Address Internationalization — 18 · `eai` · app
+- Ethernet Interfaces and Hub MIB — 18 · `hubmib` · ops
+- Next Steps in Signaling — 18 · `nsis` · tsv
+- Resource Allocation Protocol — 18 · `rap` · ops
+- Audio/Video Transport Payloads — 17 · `payload` · art
+- Access, Searching and Indexing of Directories — 17 · `asid` · app
+- Source Packet Routing in Networking — 17 · `spring` · rtg
+- Network Time Protocols — 17 · `ntp` · int
+- Secure Telephone Identity Revisited — 17 · `stir` · art
+- OSI Directory Services — 17 · `osids` · app
+- Real-Time Communication in WEB-browsers — 17 · `rtcweb` · wit
+- IP Routing for Wireless/Mobile Hosts — 16 · `mobileip` · int
+- Network-Based Mobility Extensions — 16 · `netext` · int
+- Mobility for IP: Performance, Signaling and Handoff Optimization — 16 · `mipshop` · int
+- CURves, Deprecating and a Little more Encryption — 16 · `curdle` · sec
+- Signaling Transport — 16 · `sigtran` · rai
+- EAP Method Update — 16 · `emu` · sec
+- CBOR Object Signing and Encryption — 16 · `cose` · sec
+- Content Delivery Networks Interconnection — 16 · `cdni` · wit
+- Differentiated Services — 15 · `diffserv` · tsv
+- Next Generation Transition — 15 · `ngtrans` · ops
+- Common Authentication Technology — 15 · `cat` · sec
+- AToM MIB — 15 · `atommib` · ops
+- Uniform Resource Names — 15 · `urn` · app
+- Integrated Services over Specific Link Layers — 15 · `issll` · tsv
+- Internet Area Working Group — 15 · `intarea` · int
+- Forwarding and Control Element Separation — 15 · `forces` · rtg
+- Authentication and Authorization for Constrained Environments — 15 · `ace` · sec
+- Application-Layer Traffic Optimization — 15 · `alto` · ops
+- Audio/Video Transport Extensions — 14 · `avtext` · art
+- Delay-Tolerant Networking — 14
+- Internet Open Trading Protocol — 14 · `trade` · app
+- Datagram Congestion Control Protocol — 14 · `dccp` · tsv
+- ADSL MIB — 14 · `adslmib` · ops
+- Using TLS in Applications — 13 · `uta` · sec
+- LDAP (v3) Revision — 13 · `ldapbis` · app
+- Internet Message Extensions — 13 · `822ext` · app
+- Secure Shell — 13 · `secsh` · sec
+- DDoS Open Threat Signaling — 13 · `dots` · sec
+- Automated Certificate Management Environment — 13 · `acme` · sec
+- Remote Authentication Dial-In User Service — 13 · `radius` · ops
+- Simple Network Management Protocol — 13 · `snmp` · mgt
+- Integrated Directory Services — 13 · `ids` · app
+- Internet Engineering Steering Group — 13 · `iesg`
+- Network Address Translators — 12 · `nat` · tsv
+- DNS IXFR, Notification, and Dynamic Update — 12 · `dnsind` · int
+- IP over Cable Data Network — 12 · `ipcdn` · ops
+- Managed Incident Lightweight Exchange — 12 · `mile` · sec
+- HyperText Transfer Protocol — 12 · `http` · app
+- Calendaring Extensions — 12 · `calext` · art
+- Interface to the Routing System — 12 · `i2rs` · rtg
+- Concise Binary Object Representation Maintenance and Extensions — 12 · `cbor` · art
+- QUIC — 12 · `quic` · wit
+- Service Function Chaining — 12 · `sfc` · rtg
+- Distributed Management — 11 · `disman` · ops
+- Port Control Protocol — 11 · `pcp` · int
+- Internet Traffic Engineering — 11 · `tewg` · sub
+- Inter-Domain Multicast Routing — 11 · `idmr` · rtg
+- Open Pluggable Edge Services — 11 · `opes` · app
+- Network Virtualization Overlays — 11 · `nvo3` · rtg
+- Authentication, Authorization and Accounting — 11 · `aaa` · ops
+- Routing Research Group — 11
+- JSON Mail Access Protocol — 11 · `jmap` · art
+- Internet and Management Support for Storage — 11 · `imss` · ops
+- DNS PRIVate Exchange — 11 · `dprive` · int
+- Extensible Messaging and Presence Protocol — 11 · `xmpp` · art
+- Mobility EXTensions for IPv6 — 11 · `mext` · int
+- MIME - X.400 Gateway — 11 · `mixer` · app
+- IP Telephony — 11 · `iptel` · rai
+- STORage Maintenance — 10 · `storm` · tsv
+- Javascript Object Signing and Encryption — 10 · `jose` · sec
+- Network-based Localized Mobility Management — 10 · `netlmm` · int
+- Autonomic Networking Integrated Model and Approach — 10 · `anima` · ops
+- Multicast & Anycast Group Membership — 10 · `magma` · int
+- Interfaces MIB — 10 · `ifmib` · int
+- Intellectual Property Rights — 10 · `ipr` · gen
+- Control And Provisioning of Wireless Access Points — 10 · `capwap` · ops
+- RTP Media Congestion Avoidance Techniques — 10 · `rmcat` · tsv
+- Babel routing protocol — 10 · `babel` · rtg
+- Bit Indexed Explicit Replication — 10 · `bier` · rtg
+- FEC Framework — 10 · `fecframe` · tsv
+- Distributed Mobility Management — 10 · `dmm` · int
+- Resource Reservation Setup Protocol — 10 · `rsvp` · tsv
+- Voice Profile for Internet Mail — 10 · `vpim` · app
+- RIP Version II — 9 · `ripv2` · rtg
+- Domain Name System Security — 9 · `dnssec` · sec
+- Domain Keys Identified Mail — 9 · `dkim` · art
+- Peer-to-Peer Session Initiation Protocol — 9 · `p2psip` · art
+- Cross Registry Information Service Protocol — 9 · `crisp` · app
+- TURN Revised and Modernized — 9 · `tram` · tsv
+- Media Server Control — 9 · `mediactrl` · rai
+- Centralized Conferencing — 9 · `xcon` · rai
+- Privacy-Enhanced Electronic Mail — 9 · `pem` · sec
+- LDAP Extension — 9 · `ldapext` · app
+- SNA NAU Services MIB — 9 · `snanau` · rtg
+- Handover Keying — 9 · `hokey` · sec
+- Remote ATtestation ProcedureS — 8 · `rats` · sec
+- Transport Services — 8 · `taps` · wit
+- IPv6 over Low Power Wide-Area Networks — 8 · `lpwan` · int
+- Reliable Server Pooling — 8 · `rserpool` · tsv
+- TCP Implementation — 8 · `tcpimpl` · tsv
+- Instant Messaging and Presence Protocol — 8 · `impp` · app
+- Preparation and Comparison of Internationalized Strings — 8 · `precis` · art
+- Active Queue Management and Packet Scheduling — 8 · `aqm` · tsv
+- Content Negotiation — 8 · `conneg` · app
+- Extensions for Scalable DNS Service Discovery — 8 · `dnssd` · int
+- Congestion and Pre-Congestion Notification — 8 · `pcn` · tsv
+- Remote Direct Data Placement — 8 · `rddp` · tsv
+- IETF Administrative Support Activity 2 — 8 · `iasa2` · gen
+- DNS-based Authentication of Named Entities — 8 · `dane` · sec
+- TELNET — 8 · `telnet` · app
+- Domain-based Message Authentication, Reporting & Conformance — 8 · `dmarc` · art
+- Telnet TN3270 Enhancements — 8 · `tn3270e` · app
+- Security Issues in Network Event Logging — 8 · `syslog` · sec
+- Realtime Traffic Flow Measurement — 8 · `rtfm` · tsv
+- Mail Extensions — 8 · `mailext` · app
+- Multipath TCP — 8 · `mptcp` · tsv
+- ControLling mUltiple streams for tElepresence — 8 · `clue` · art
+- Mail and Directory Management — 8 · `madman` · app
+- Process for Organization of Internet Standards ONgoing — 8 · `poisson` · gen
+- Home Networking — 8 · `homenet` · int
+- Integrated Services — 8 · `intserv` · tsv
+- Simple Authentication and Security Layer — 7 · `sasl` · sec
+- Common Indexing Protocol — 7 · `find` · app
+- vCard and CardDAV — 7 · `vcarddav` · app
+- Hypertext Transfer Protocol Authentication — 7 · `httpauth` · sec
+- Middlebox Communication — 7 · `midcom` · tsv
+- IPv6 over the TSCH mode of IEEE 802.15.4e — 7 · `6tisch` · int
+- Delay/Disruption Tolerant Networking — 7 · `dtn` · int
+- Multicast-Address Allocation — 7 · `malloc` · tsv
+- Energy Management — 7 · `eman` · ops
+- Provisioning Registry Protocol — 7 · `provreg` · app
+- Bridge MIB — 7 · `bridge` · ops
+- Internet Emergency Preparedness — 7 · `ieprep` · rai
+- Network Mobility — 7 · `nemo` · int
+- Light-Weight Implementation Guidance — 7 · `lwig` · int
+- Context Transfer, Handoff Candidate Discovery, and Dormant Mode Host Alerting — 7 · `seamoby` · tsv
+- Network Management — 7
+- WWW Distributed Authoring and Versioning — 7 · `webdav` · app
+- Routing Policy System — 7 · `rps` · ops
+- Messaging Abuse Reporting Format — 7 · `marf` · app
+- Integrated Security Model for SNMP — 7 · `isms` · app
+- Internet Mail Extensions — 7 · `smtpext` · app
+- Performance Implications of Link Characteristics — 7 · `pilc` · tsv
+- Layer 1 Virtual Private Networks — 6 · `l1vpn` · rtg
+- Internet Wideband Audio Codec — 6 · `codec` · art
+- General Switch Management Protocol — 6 · `gsmp` · sub
+- Internet Message Access Protocol Extension — 6 · `imapext` · app
+- IP Over Large Public Data Networks — 6 · `iplpdn` · rtg
+- Media Gateway Control — 6 · `megaco` · rai
+- IP Over Asynchronous Transfer Mode — 6 · `ipatm` · int
+- Network Endpoint Assessment — 6 · `nea` · sec
+- Frame Relay Service MIB — 6 · `frnetmib` · int
+- Policy Framework — 6 · `policy` · ops
+- MIME Encapsulation of Aggregate HTML Documents — 6 · `mhtml` · app
+- Source Address Validation Improvements — 6 · `savi` · int
+- XML Digital Signatures — 6 · `xmldsig` · sec
+- System for Cross-domain Identity Management — 6 · `scim` · sec
+- Session PEERing for Multimedia INTerconnect — 6 · `speermint` · rai
+- Service Location Protocol — 6 · `svrloc` · int
+- Building Blocks for HTTP APIs — 6 · `httpapi` · wit
+- Application Bridging for Federated Access Beyond web — 6 · `abfab` · sec
+- Character MIB — 6 · `charmib` · mgt
+- Keying and Authentication for Routing Protocols — 6 · `karp` · rtg
+- SNMP Security — 6 · `snmpsec` · sec
+- Coding for efficient NetWork Communications Research Group — 6
+- Sip Traversal Required for Applications to Work — 6 · `straw` · art
+- Web Extensible Internet Registration Data Service — 6 · `weirds` · app
+- Multicast Mobility — 6 · `multimob` · int
+- X.400 Operations — 6 · `x400ops` · app
+- SIP-TO-XMPP — 6 · `stox` · art
+- IPv6 over Low power WPAN — 6 · `6lowpan` · int
+- IP over DVB — 5 · `ipdvb` · app
+- Roaming Operations — 5 · `roamops` · ops
+- Timing over IP Connection and Transfer of Clock — 5 · `tictoc` · int
+- Message Organization — 5 · `morg` · app
+- NNTP Extensions — 5 · `nntpext` · app
+- Open Specification for Pretty Good Privacy — 5 · `openpgp` · sec
+- MHS-DS — 5 · `mhsds` · app
+- Adaptive DNS Discovery — 5 · `add` · int
+- Calendaring and Scheduling — 5 · `calsch` · app
+- IP Mobility Optimizations Research Group — 5
+- SIP Recording — 5 · `siprec` · art
+- Site Multihoming in IPv6 — 5 · `multi6` · ops
+- Entity MIB — 5 · `entmib` · ops
+- IP over IEEE 802.16 Networks — 5 · `16ng` · int
+- Drone Remote ID Protocol — 5 · `drip` · int
+- ONC Remote Procedure Call — 5 · `oncrpc` · tsv
+- Routing Information Protocol — 5 · `rip` · rtg
+- IRTF — 5
+- Protocol for carrying Authentication for Network Access — 5 · `pana` · int
+- Virtual Router Redundancy Protocol — 5 · `vrrp` · rtg
+- Long-Term Archive and Notary Services — 5 · `ltans` · app
+- Internationalized Domain Names in Applications, Revised — 5 · `idnabis` · app
+- DS1/DS3 MIB — 5 · `trunkmib` · int
+- Language Tag Registry Update — 5 · `ltru` · app
+- Extensions to FTP — 5 · `ftpext` · app
+- Domain Name System — 5 · `dns` · app
+- Cga & Send maIntenance — 5 · `csi` · int
+- Access Node Control Protocol — 5 · `ancp` · int
+- Congestion Exposure — 5 · `conex` · tsv
+- Router Requirements — 4 · `rreq` · rtg
+- Interactive Connectivity Establishment — 4 · `ice` · art
+- Whois and Network Information Lookup Service — 4 · `wnils` · usv
+- Large-Scale Measurement of Broadband Performance — 4 · `lmap` · ops
+- Web Security — 4 · `websec` · app
+- Integration of Internet Information Resources — 4 · `iiir` · usv
+- Intrusion Detection Exchange Format — 4 · `idwg` · sec
+- Service in the PSTN/IN Requesting InTernet Service — 4 · `spirits` · tsv
+- CIDR Deployment — 4 · `cidrd` · ops-old
+- Stay Home Meet Occasionally Online — 4 · `shmoo` · gen
+- General Area Open Meeting — 4 · `genarea` · gen
+- Packet Sampling — 4 · `psamp` · ops
+- Message Tracking Protocol — 4 · `msgtrk` · app
+- Extensible Authentication Protocol — 4 · `eap` · int
+- Internet Message Access Protocol — 4 · `imap` · app
+- Binary Floor Control Protocol Bis — 4 · `bfcpbis` · art
+- Security Events — 4 · `secevent` · sec
+- JavaScript Object Notation — 4 · `json` · app
+- Internet School Networking — 4 · `isn` · usv
+- Security Automation and Continuous Monitoring — 4 · `sacm` · sec
+- Network Access Server Requirements — 4 · `nasreq` · ops
+- Multiple Interfaces — 4 · `mif` · int
+- Notifications and Acknowledgements Requirements — 4 · `notary` · app
+- INtermediary-safe SIP session ID — 4 · `insipid` · art
+- HyperText Markup Language — 4 · `html` · app
+- Printer MIB — 4 · `printmib` · app
+- Poised 95 — 4 · `poised95` · gen
+- One Time Password Authentication — 4 · `otp` · sec
+- Reputation Services — 4 · `repute` · app
+- Privacy Enhanced RTP Conferencing — 4 · `perc` · art
+- Codec Encoding for LossLess Archiving and Realtime transmission — 4 · `cellar` · art
+- IP over InfiniBand — 4 · `ipoib` · int
+- Application Exchange — 4 · `apex` · app
+- Routing In Fat Trees — 4 · `rift` · rtg
+- Site Multihoming by IPv6 Intermediation — 4 · `shim6` · int
+- SIP Overload Control — 4 · `soc` · rai
+- User Services — 4 · `uswg` · gen
+- TFTP Extensions — 4 · `tftpexts` · app
+- Web-Based Push Notifications — 3 · `webpush` · art
+- Media OPerationS — 3 · `mops` · ops
+- MIME-MHS Interworking — 3 · `mimemhs` · app
+- Authenticated Firewall Traversal — 3 · `aft` · sec
+- Layer Independent OAM Management in the Multi-Layer Environment — 3 · `lime` · ops
+- Internationalized Domain Name — 3 · `idn` · app
+- Calendaring and Scheduling Standards Simplification — 3 · `calsify` · app
+- Operational Statistics — 3 · `opstat` · ops-old
+- X.25 Management Information Base — 3 · `x25mib` · mgt
+- Provisioning of Symmetric Keys — 3 · `keyprov` · sec
+- Captive Portal Interaction — 3 · `capport` · art
+- Detecting Network Attachment — 3 · `dna` · int
+- Electronic Data Interchange-Internet Integration — 3 · `ediint` · art
+- Content Distribution Internetworking — 3 · `cdi` · app
+- Responsible Use of the Network — 3 · `run` · usv
+- Call Control UUI Service for SIP — 3 · `cuss` · rai
+- Internet Congestion Control — 3
+- Inter-Domain Policy Routing — 3 · `idpr` · rtg
+- Privacy Enhancements and Assessments Research Group — 3
+- SNMP Over a Multi-Protocol Internet — 3 · `mpsnmp` · mgt
+- TCP/UDP Over CLNP-Addressed Networks — 3 · `tuba` · int
+- Directory Information Services Infrastructure — 3 · `disi` · usv
+- SNMP Agent Extensibility — 3 · `agentx` · ops
+- Detailed Revision/Update of Message Standards — 3 · `drums` · app
+- Post-Quantum Use In Protocols — 3 · `pquip` · sec
+- Application MIB — 3 · `applmib` · app
+- Procedures for Internet/Enterprise Renumbering — 3 · `pier` · ops
+- Interface to Network Security Functions — 3 · `i2nsf` · sec
+- Multiplexed Application Substrate over QUIC Encryption — 3 · `masque` · wit
+- Web Transaction Security — 3 · `wts` · sec
+- Configuration Management with SNMP — 3 · `snmpconf` · ops
+- New Internet Routing and Addressing Architecture — 3 · `nimrod` · rtg
+- Data for Reachability of Inter/tra-NetworK SIP — 3 · `drinks` · art
+- IPv6 Site Renumbering — 3 · `6renum` · ops
+- Token Binding — 3 · `tokbind` · sec
+- Peer-to-Peer Research Group — 3
+- Privacy Pass — 3 · `privacypass` · sec
+- Securing Neighbor Discovery — 3 · `send` · int
+- Path Aware Networking RG — 3
+- G & R for Security Incident Processing — 3 · `grip` · ops
+- PSTN and Internet Internetworking — 3 · `pint` · tsv
+- MIME Content-Type for SGML Documents — 3 · `mimesgml` · app
+- Peer to Peer Streaming Protocol — 3 · `ppsp` · tsv
+- Better-Than-Nothing Security — 3 · `btns` · sec
+- RFC Series Working Group — 3
+- IP Payload Compression Protocol — 3 · `ippcp` · int
+- Operations & Management Area Open Meeting — 3 · `opsarea` · ops
+- Securely Available Credentials — 3 · `sacred` · sec
+- General Area — 3
+- ISDN MIB — 2 · `isdnmib` · int
+- TCP Increased Security — 2 · `tcpinc` · tsv
+- Messaging Layer Security — 2 · `mls` · sec
+- Low Extra Delay Background Transport — 2 · `ledbat` · tsv
+- Kerberized Internet Negotiation of Keys — 2 · `kink` · sec
+- Simple Public Key Infrastructure — 2 · `spki` · sec
+- FDDI MIB — 2 · `fddimib` · mgt
+- SPF Update — 2 · `spfbis` · app
+- Uniform Resource Locator Registration Procedures — 2 · `urlreg` · app
+- TP/IX — 2 · `tpix` · int
+- Media Type Maintenance — 2 · `mediaman` · art
+- Time Zone Data Distribution Service — 2 · `tzdist` · art
+- Link State Vector Routing — 2 · `lsvr` · rtg
+- Problem Statement — 2 · `problem` · gen
+- 100VG-AnyLAN MIB — 2 · `vgmib` · int
+- Scalable Adaptive Multicast Research Group — 2
+- SIP Common Log Format — 2 · `sipclf` · rai
+- Transaction Internet Protocol — 2 · `tip` · app
+- IP Over IEEE 1394 — 2 · `ip1394` · int
+- Lightweight Authenticated Key Exchange — 2 · `lake` · sec
+- Yet Another Mail — 2 · `yam` · app
+- DECnet Phase IV MIB — 2 · `decnetiv` · mgt
+- TCP Large Windows — 2 · `tcplw` · tsv
+- Border Gateway Protocol — 2 · `bgp` · rtg
+- Secure Shell Maintenance — 2 · `sshm` · sec
+- Endpoint Congestion Management — 2 · `ecm` · tsv
+- Geographic JSON — 2 · `geojson` · art
+- P. Internet Protocol — 2 · `pip` · int
+- TCP Over Satellite — 2 · `tcpsat` · tsv
+- Extensible Provisioning Protocol Extensions — 2 · `eppext` · art
+- Multiple AoR reachabiliTy InformatioN Indication — 2 · `martini` · rai
+- Decoupled Application Data Enroute — 2 · `decade` · tsv
+- Large Scale Multicast Applications — 2 · `lsma` · app
+- Atom Publishing Format and Protocol — 2 · `atompub` · app
+- Mail Maintenance — 2 · `mailmaint` · art
+- MAC Address Device Identification for Network and Application Services — 2 · `madinas` · int
+- Network Information Services Infrastructure — 2 · `nisi` · usv
+- Internet Area — 2
+- Human Rights Protocol Considerations — 2
+- JSON data formats for vCard and iCalendar — 2 · `jcardcal` · app
+- Network OSI Operations — 2 · `noop` · ops-old
+- Usenet Article Standard Update — 2 · `usefor` · app
+- IP over Fibre Channel — 2 · `ipfc` · int
+- Dispatch — 2 · `dispatch` · art
+- Basic Level of Interoperability for SIP Services — 2 · `bliss` · rai
+- Assignment of OSI NSAP Addresses — 2 · `osinsap` · osi
+- IP Wireless Access in Vehicular Environments — 2 · `ipwave` · int
+- Site Security Handbook — 2 · `ssh` · usv
+- Meeting Venue — 2 · `mtgvenue` · gen
+- IP over Optical — 2 · `ipo` · sub
+- IP Security Remote Access — 2 · `ipsra` · sec
+- LDAP Duplication/Replication/Update Protocols — 2 · `ldup` · app
+- IP Security Policy — 2 · `ipsp` · sec
+- Source-Specific Multicast — 2 · `ssm` · rtg
+- Anti-Spam Research Group — 2
+- Software Updates for Internet of Things — 2 · `suit` · sec
+- IP Over FDDI — 2 · `fddi` · int
+- BiDirectional or Server-Initiated HTTP — 2 · `hybi` · art
+- JSON Path — 2 · `jsonpath` · art
+- Ethernet MIB — 2 · `ethermib` · mgt
+- Selection of Language for Internet Media — 2 · `slim` · art
+- Reliable and Available Wireless — 2 · `raw` · rtg
+- IP Over AppleTalk — 2 · `appleip` · int
+- Routing over Large Clouds — 2 · `rolc` · rtg
+- Point-to-Point Protocol — 2 · `ppp` · int
+- Profiling Use of PKI in IPSEC — 2 · `pki4ipsec` · sec
+- Uniform Resource Names, Revised — 2 · `urnbis` · art
+- TCP Client Identity Protocol — 2 · `ident` · sec
+- Internet User Glossary — 2 · `userglos` · usv
+- Application Configuration Access Protocol — 2 · `acap` · app
+- Protocol to Access WS database — 2 · `paws` · app
+- Thing-to-Thing — 2
+- IKEv2 Mobility and Multihoming — 2 · `mobike` · sec
+- OSI Internet Management — 2 · `oim` · mgt
+- Automatic SIP trunking And Peering — 2 · `asap` · art
+- Speech Services Control — 2 · `speechsc` · rai
+- Electronic Data Interchange — 2 · `edi` · app
+- Oblivious HTTP Application Intermediation — 2 · `ohai` · sec
+- Quantum Internet Research Group — 2
+- Blocks Extensible Exchange Protocol — 2 · `beep` · app
+- Grant Negotiation and Authorization Protocol — 2 · `gnap` · sec
+- SIP Best-practice Recommendations Against Network Dangers to privacY — 2 · `sipbrandy` · art
+- GitHub Integration and Tooling — 2 · `git` · gen
+- IMAP APPEND Extensions — 2 · `imapapnd` · art
+- DKIM Crypto Update — 2 · `dcrup` · art
+- Performance Metrics for Other Layers — 2 · `pmol` · ops
+- Web Replication and Caching — 1 · `wrec` · app
+- WebRTC Ingest Signaling over HTTPS — 1 · `wish` · wit
+- Next Generation Structure of Management Information — 1 · `sming` · ops
+- Public Notary Transparency — 1 · `trans` · sec
+- MODeration PrOceDures — 1 · `modpod` · gen
+- User Documents — 1 · `userdoc` · usv
+- Network Function Virtualization — 1
+- IPSEC KEYing information resource record — 1 · `ipseckey` · sec
+- Minimal OSI Upper-Layers — 1 · `thinosi` · osi
+- The Internet and the Millennium Problem — 1 · `2000` · ops
+- Time-Variant Routing — 1 · `tvr` · rtg
+- Receipt Notifications for Internet Mail — 1 · `receipt` · app
+- UniDirectional Link Routing — 1 · `udlr` · rtg
+- Managing, Ordering, Distributing, Exposing, & Registering telephone Numbers — 1 · `modern` · art
+- Physical Topology MIB — 1 · `ptopomib` · ops
+- Trusted Execution Environment Provisioning — 1 · `teep` · sec
+- Computing in the Network Research Group — 1
+- Internet Architecture Board — 1 · `iab`
+- Routing Protocol Security Requirements — 1 · `rpsec` · rtg
+- QoS Routing — 1 · `qosr` · rtg
+- BGP Deployment and Application — 1 · `bgpdepl` · ops-old
+- Label Generation Rules — 1 · `lager` · art
+- Network Fax — 1 · `netfax` · app
+- OSI General — 1 · `osigen` · osi
+- Supply Chain Integrity, Transparency, and Trust — 1 · `scitt` · sec
+- NOC-Tool Catalogue Revisions — 1 · `noctool2` · usv
+- L2VPN Service Model — 1 · `l2sm` · ops
+- Router Discovery — 1 · `rdisc` · int
+- Connection IP — 1 · `cip` · int
+- IP over VBI — 1 · `ipvbi` · int
+- Host Resources MIB — 1 · `hostmib` · mgt
+- Revise Universally Unique Identifier Definitions — 1 · `uuidrev` · art
+- Network Training Materials — 1 · `trainmat` · usv
+- IRTF Open Meeting — 1
+- Border Gateway Multicast Protocol — 1 · `bgmp` · rtg
+- Congestion Control Working Group — 1 · `ccwg` · wit
+- Networked Information Retrieval — 1 · `nir` · usv
+- HTTP State Management Mechanism — 1 · `httpstate` · app
+- Sip ALerting for User Devices — 1 · `salud` · rai
+- Transport Modeling Research Group — 1
+- DNS Over HTTPS — 1 · `doh` · art
+- Secure Media Frames — 1 · `sframe` · art
+- IMAP QRESYNC Extension — 1 · `qresync` · app
+- Guide for Internet Standards Writers — 1 · `stdguide` · usv
+- Ad-Hoc Network Autoconfiguration — 1 · `autoconf` · int
+- Schema Registration — 1 · `schema` · app
+- Data Link Switching MIB — 1 · `dlswmib` · rtg
+- Serialising Extended Data About Times and Events — 1 · `sedate` · art
+- NOC-Tools — 1 · `noctools` · usv
+- Internet Security Policy — 1 · `spwg` · sec
+- Web Versioning and Configuration Management — 1 · `deltav` · app
+- Internet Video Codec — 1 · `netvc` · art
+- Source Demand Routing — 1 · `sdr` · rtg
+- User Connectivity — 1 · `ucp` · ops-old
+- Uninterruptible Power Supply — 1 · `upsmib` · ops
+- Performance and Congestion Control — 1 · `pcc` · int
+- Javascript Object Notation Update — 1 · `jsonbis` · art
+- NomCom Eligibility Update — 1 · `elegy` · gen
+- New IETF Standards Track Discussion — 1 · `newtrk` · gen
+- DiffServ Applied to Real-time Transports — 1 · `dart` · rai
+- Network Management Operations — 1 · `nmop` · ops
+- Font Top Level Media Type — 1 · `justfont` · art
+- BPF/eBPF — 1 · `bpf` · int
+- Address Resolution for Massive numbers of hosts in the Data center — 1 · `armd` · ops
+- Zero Configuration Networking — 1 · `zeroconf` · int
+- Multicast Source Discovery Protocol — 1 · `msdp` · rtg
+- DTLS In Constrained Environments — 1 · `dice` · sec
+- Planning for the IANA/NTIA Transition — 1 · `ianaplan` · gen
+- L3VPN Service Model  — 1 · `l3sm` · ops
+- Modem Management — 1 · `modemmgt` · mgt
+- Simple Internet Protocol Plus — 1 · `sipp` · ipng
+- SNA DLC Services MIB — 1 · `snadlc` · rtg
+- Interactive Multimedia — 1 · `imm` · tsv
+- Software Defined Networking — 1
+- Internet Stream Protocol V2 — 1 · `st2` · int
+- A Semantic Definition Format for Data and Interactions of Things — 1 · `asdf` · art
+- Internet Accounting — 1 · `acct` · mgt
+- IP Over Switched Megabit Data Service — 1 · `smds` · int
+- Address Autoconfiguration — 1 · `addrconf` · ipng
+- User Documents Revisions — 1 · `userdoc2` · usv
+- Extended Incident Handling — 1 · `inch` · sec
+- Operation of the IESG/IAB Nominating and Recall Committees — 1 · `nomcom` · gen
+- Global Access to the Internet for All — 1
+- Alert Management — 1 · `alertman` · mgt
+- Path MTU Discovery — 1 · `pmtud` · tsv
+- Internet Anonymous FTP Archives — 1 · `iafa` · usv
+- IMAP MOVE extension — 1 · `imapmove` · app
+- Relational Database Management Systems MIB — 1 · `rdbmsmib` · mgt
+- Relay User Machine — 1 · `rum` · art
+- Humanities and Arts — 1 · `harts` · usv
