@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
-"""Regenerate seed/ from the corpus mirror. Run from tagging/:  python3 seed/build-seed.py
+"""SUPERSEDED at W3 -- kept for reference, do not run to produce inputs.
 
-Reads ../rfc/ and writes seed/structure.md, seed/keywords.md, seed/keywords-full.json.
-Re-run after the RFC Editor publishes a refreshed index; the counts quoted in
-README.md and HANDOFF.md will drift and should be updated from this script's summary.
+This regenerates seed/ from the static corpus mirror at ../../rfc/, which the plan has
+retired: it does not exist in a standalone clone of this repo, and the datatracker is now
+the source for every field it reads. It also cannot produce the charter excerpts,
+group type or group state that Prompt A1 now expects.
+
+Replace it with an ORM-based generator per README.md section 8. Kept because its output
+shape -- one block per group, streams and areas with counts -- is the shape to reproduce.
 """
 import json, glob, re, collections, os
 

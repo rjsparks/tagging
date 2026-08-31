@@ -10,14 +10,48 @@ Figures throughout come from the datatracker dev environment, DB snapshot 2026-0
 
 ---
 
+## 0. For reviewers
+
+This repo exists for review of the plan. Execution happens in a datatracker development
+container, not here.
+
+**You are reviewing the plan, not the vocabulary.** No vocabulary exists yet. The
+expensive review — reading `tags.yaml` line by line — is gate 1 at W8, and it comes to
+you as a separate round once W5–W7 have produced something. Reviewing the plan well now
+is what keeps that round from being wasted.
+
+Read §1 (what we are building), §2 (what is already decided), §7 (the work and its
+order), §10 (how we will know it worked). Skip §3, §5, §6 and §12 — execution mechanics.
+
+What we need from you:
+
+| Ask | Where | Who |
+|---|---|---|
+| Answer **Q1–Q4**. Q1 — reef's schema and API for the vocabulary and the tag→RFC map — is the one that blocks work: it fixes what Stage B delivers. Q3 decides who runs Prompt B for a newly published RFC. | §2 | reef and Purple maintainers |
+| Confirm **D6–D9** read correctly, particularly D9. The datatracker's community app already offers RFC subscription by group and area; it is a different feature, will not see these tags, and is not being changed. If that is wrong, say so now — it changes where half the work goes. | §2 | design team |
+| Sanity-check the **facet shape** — 25–35 `topic/`, 90–140 `tech/`, 8–12 `kind/`. Already decided (D1), listed so you can see the constraint the prompts work under. Say so now if it looks wrong; it is cheap today and costs a full re-tag after W12. | §2, D1 | design team |
+| Agree that **gate 5 measures notifications per year**, not corpus counts. This changes which tags survive: a tag on 400 RFCs all published before 1995 is a good browse category and a dead subscription. | §10 | design team |
+| **Own the gold set** — W10 is 150 RFCs tagged by a human, drawn across eras. It is the main piece of human work in the plan and nothing downstream substitutes for it. It needs a name against it. | §7, W10 | volunteer needed |
+| Decide **Q5** — whether subject tags should also surface in `rfc-index.xml`. If yes it is an additive `<tags>` element in `add_rfc_xml_index_entries` plus an `rfc-index.xsd` change with external consumers to coordinate; if no, reef is the only place they appear. | §2, Q5 | design team |
+
+Two things worth knowing before you read. The tags are stored in reef, not the
+datatracker; the datatracker is here as the source of the metadata the vocabulary is
+derived from, and the plan is deliberately thin on datatracker code. And roughly a third
+of the corpus has no working group behind it, including almost every document with no
+abstract — that set is the hardest part of the job, and §4 says exactly how big it is.
+
+---
+
 ## 1. Objective
 
 rfc-editor.org is adding subscription: a logged-in user subscribes to a tag and is
 notified of events on RFCs carrying it — above all the publication of a new RFC.
 Deliver two things:
 
-1. A frozen subject-tag vocabulary, `tags.yaml`.
-2. That vocabulary applied to every published RFC, and to each new RFC at publication.
+1. A frozen subject-tag vocabulary, `tags.yaml`, to be loaded into reef as its initial
+   vocabulary.
+2. That vocabulary applied to every published RFC, delivered as a tag→RFC map for reef,
+   and applied to each new RFC at publication.
 
 **Subscription is the governing constraint.** A wrong tag mails people who did not want
 it; a missing tag silently fails someone who did. Two consequences bind every stage:
@@ -27,7 +61,7 @@ drift apart.
 
 ## 2. Fixed decisions
 
-Made by the RFC Editor. Do not relitigate.
+Made by the design team. Do not relitigate.
 
 | # | Decision |
 |---|---|
@@ -37,23 +71,53 @@ Made by the RFC Editor. Do not relitigate.
 | D4 | **The deliverable is prompts plus a run harness**, not a built pipeline. |
 | D5 | **Author-supplied keywords are not candidate tags.** They are uncurated author self-labelling; the vocabulary must be better curated than they are. Admitted for naming and aliases only. |
 
-Settled against the datatracker; confirm with the RFC Editor at W1 but proceed on these:
+Architecture, as directed by the design team:
 
 | # | Decision |
 |---|---|
-| D6 | **New model, new name.** `RfcTagName(NameModel)` in `ietf/name/models.py` with `facet` (`topic`/`tech`/`kind`) and `aliases`; `Document.rfc_tags = M2M(RfcTagName)`. Do **not** reuse `Document.tags`/`DocTagName` (all 33 rows are workflow substates such as `need-rev`, `ad-f-up`, `missref`; `ietf/doc/models.py:441` reads them as `iesg_substate`). Do **not** reuse `Document.keywords` (that field holds the author keywords D5 excludes). Say "subject tag" in code and UI; reserve "tag" for `DocTagName`. |
-| D7 | **The datatracker owns the tags.** `ietf/sync/rfcindex.py` *generates* `rfc-index.xml` from the ORM and publishes it to the red bucket and `RFC_PATH`; rfc-editor.org consumes it. Tags live in the datatracker and export through `add_rfc_xml_index_entries` as an additive optional `<tags>` element. Budget for coordinating an `rfc-index.xsd` change with external consumers. |
-| D8 | **Subscription reuses the community-list machinery.** `CommunityList` → `SearchRule` → `EmailSubscription` already carries `group_rfc`, `area_rfc` and `author_rfc` rule types, and `community_list_rules_matching_doc` handles `type_id == "rfc"`. Add a `tag_rfc` rule type. Do not build a parallel subscription store on rfc-editor.org. |
-| D9 | **Fix the notification guard, do not work around it.** `ietf/community/signals.py` returns early unless `event.doc.type_id == "draft"`, so all 9,828 `published_rfc` events are dropped today and RFC subscription rules mail nobody. Widen the guard and define what "significant" means for an RFC (`states_of_significant_change()` is all draft states). |
+| D6 | **Tags live in `ietf-tools/reef`.** Reef stores the tag vocabulary and the tag→RFC map, and reef is where new tags are created. The datatracker does **not** store them: no `RfcTagName`, no `Document.rfc_tags`, no migration. Stage B's output is loaded into reef. |
+| D7 | **The datatracker is the metadata source, not the tag store.** Everything the vocabulary is derived from — titles, abstracts, groups, areas, charters, publication dates, relations — comes from the datatracker ORM (§4–§6). That is its whole role here, plus the probable relay in D8. |
+| D8 | **Publication-time tagging flows Purple → datatracker → reef.** Purple hints the tags for a newly published RFC; the datatracker relays to reef. The hint would ride the existing publication notification, `POST /api/purple/rfc/publish/` (`RfcPubSerializer`, `ietf/api/serializers_rpc.py:286`). Expected shape, not yet settled — see Q1–Q4. |
+| D9 | **The community app is out of scope and stays untouched.** The datatracker's existing RFC subscription — `CommunityList`/`SearchRule` with `group_rfc`, `area_rfc`, `author_rfc`, and the `type_id != "draft"` guard in `ietf/community/signals.py` — is a *similar but unrelated* feature. It will not see these tags, no `tag_rfc` rule type is added, and that guard is not this plan's to change. Subscription and notification for subject tags are reef's, not the community app's. |
+
+D9 is stated as a prohibition because the resemblance is a trap: the community app already
+subscribes to RFCs by group and area, so it reads like the delivery half of this feature.
+It is not, and building toward it would produce a feature wired to the wrong store.
+
+### Open questions
+
+These block W9 and fix Stage B's output format. They are not ours to answer alone.
+
+| # | Question | Needed by |
+|---|---|---|
+| Q1 | Reef's data model and API for the vocabulary and the tag→RFC map. Determines what Stage B emits and how it is loaded. | W9, and §11's output format |
+| Q2 | Does the datatracker persist anything — tag hints, a cached map — or is it purely a relay? Decides whether any datatracker schema change happens at all. | W9 |
+| Q3 | Does Purple hint tags itself, or does it call something that runs Prompt B? The same prompt must tag new RFCs as tagged the back catalogue, or the two drift (§1). Whoever runs it, it must be that prompt against the frozen vocabulary. | W15 |
+| Q4 | How reef delivers subscription and notification, and whether tag volume there matches the assumptions gate 5 is built on. | W13, W14 |
+| Q5 | Should tags also appear in `rfc-index.xml`? The datatracker generates that file from the ORM (`ietf/sync/rfcindex.py`) and rfc-editor.org consumes it, so it is an available channel — but with tags in reef it may not be wanted, and it costs an `rfc-index.xsd` change with external consumers. | after W14 |
 
 ## 3. Environment
 
-| Resource | Value |
-|---|---|
-| Metadata | Datatracker ORM. `Document.objects.filter(type_id="rfc")` |
-| Document text | `/assets/ietf-ftp/rfc/` = `settings.RFC_PATH`, reached as `doc.text(n)` |
-| Charters | `settings.CHARTER_PATH`, reached as `group.charter.text()` |
-| Working dir | this directory; prompts, seed inputs, run outputs |
+| Resource | Value | Survives a container rebuild? |
+|---|---|---|
+| Metadata | Datatracker ORM. `Document.objects.filter(type_id="rfc")` | Named volume `postgresdb-data`. Yes, unless `docker/cleandb` or `docker/cleanall` |
+| Document text | `/assets/ietf-ftp/rfc/` = `settings.RFC_PATH`, reached as `doc.text(n)` | Named volume `app-assets`. Yes, unless `docker/cleanall` (`down -v`), which destroys the artifact sync |
+| Charters | `settings.CHARTER_PATH`, reached as `group.charter.text()` | Same volume as above |
+| This repo | prompts, seed inputs, plan, run outputs. `git@github.com:rjsparks/tagging.git` | Yes — its own git repo with a remote |
+
+This repo is checked out separately from the datatracker, but every stage needs the
+datatracker ORM, so scripts run through that checkout's `manage.py` with this repo's path
+passed in:
+
+```
+TAGGING=/path/to/tagging
+cd /path/to/datatracker
+TAGGING_DIR=$TAGGING python ietf/manage.py shell -c "exec(open('$TAGGING/baseline.py').read())"
+```
+
+After any rebuild or refresh, run W0 before anything else: it re-measures §4 and confirms
+`RFC_PATH` is still populated. If `text reachable` comes back near zero, the artifact
+sync needs redoing and the `body_excerpt` half of §6 is blocked until it is.
 
 The static mirror is no longer an input. Everything the plan needs is reachable from the
 ORM or from `RFC_PATH` through ORM accessors.
@@ -153,27 +217,31 @@ Query: `Document.objects.filter(type_id="rfc").select_related("group", "group__p
 
 | ID | Work | Depends on | Deliverable |
 |---|---|---|---|
-| **W0** | Baseline. Re-measure §4 against the live environment; run `text_exists()` across the abstract-less set; record the snapshot date. | — | `baseline-<date>.json`, §4 updated |
-| **W1** | Confirm D6–D9 with the RFC Editor. | W0 | Naming and ownership settled |
+| **W0** | Baseline. Run `baseline.py` per §3 — re-measures every §4 figure, enumerates text reachability, and writes the snapshot-dated JSON. Update §4 from its output. | — | `baseline-<date>.json`, §4 updated |
+| **W1** | Confirm D6–D9 with the design team. | W0 | Naming and ownership settled |
 | **W2** | Record builder: one ORM pass emitting §6 records. | W0 | `build_records.py`, `records.jsonl` |
-| **W3** | Seed generation: `seed/structure.md` (see §8), `seed/keywords.md`, `seed/keywords-full.json`. | W2 | 3 seed files |
+| **W3** | Seed generation per §8. **Replaces the committed `seed/` files, which are stale** — they were built from the retired mirror by `seed/build-seed.py`, carry pre-datatracker counts, and have no charter excerpts. Do not run A1 on them as they stand. | W2 | 3 regenerated seed files, ORM-based generator |
 | **W4** | A2 sample: draw and commit per §9. | W2 | `sample-a2.json` + committed RFC numbers + snapshot date |
 | **W5** | Run A1 (`prompt-a1-seeded-taxonomy.md`). Isolated session. | W3 | `vocab-s.yaml` |
 | **W6** | Run A2 (`prompt-a2-inductive-taxonomy.md`). Isolated session, stripped records. | W4 | `vocab-i.yaml` |
 | **W7** | Run A3 (`prompt-a3-reconcile.md`). | W5, W6 | `tags.yaml` draft + `review_queue` |
 | **W8** | **Human review of `tags.yaml`.** Gate 1. Ordered `review_queue` first. | W7 | Frozen `tags.yaml` v1.0.0 |
-| **W9** | Plumbing, in parallel from W1: `RfcTagName` + `Document.rfc_tags` + migration; Tastypie resources; `tag_rfc` `SearchRule`; widen the `signals.py` guard; `<tags>` in the index generator behind a flag; batch-loader management command. | W1 | Merged, tested |
+| **W9** | Plumbing, in parallel from W1 and **blocked on Q1–Q2**: reef vocabulary and tag→RFC schema; a loader that takes Stage B output into reef; the Purple → datatracker → reef hint path. Nothing in the community app; no datatracker schema change unless Q2 says otherwise. | W1, Q1, Q2 | Merged, tested |
 | **W10** | Gold set: human-tag 150 RFCs drawn across eras. | W8 | `gold.json` |
 | **W11** | Score B against gold. Gate 2. Below ~0.75 F1, fix the prompt or the vocabulary and repeat — do not proceed intending to clean up later. | W9, W10 | Score report |
-| **W12** | Stage B full run: ~393 batches of 25. | W11 | `tags-batch-*.json`, loaded to DB |
+| **W12** | Stage B full run: ~393 batches of 25. | W11 | `tags-batch-*.json`, loaded into reef |
 | **W13** | Gates 3, 4, 4b, 4c, 5, 6 (§10). | W12 | Gate reports, review queue |
 | **W14** | Enable export and subscription; announce. | W13 | Live |
-| **W15** | Ongoing: per-publication tagging hook (§11); `proposed_tags` review cycle. | W14 | — |
+| **W15** | Ongoing: per-publication tagging via the Purple hint path (§11), pending Q3; `proposed_tags` review cycle. | W14, Q3 | — |
 
 W10 is the main piece of human work and nothing downstream substitutes for it. W8 is the
 only gate that is genuinely expensive to skip: a vocabulary error costs a full re-tag.
 
 ## 8. Seed generation (W3)
+
+The `seed/` files in this repo were generated from the retired static mirror and are
+marked stale in place. W3 regenerates all three from the ORM; `seed/build-seed.py` is kept
+only because its output shape is the one to reproduce.
 
 `seed/structure.md` — input to A1, which never sees document content. Per group, from the
 ORM:
@@ -233,6 +301,11 @@ Gates 4b and 4c must run *after* gate 2 and must never feed back into prompt B. 
 tags independently of group and charter; that independence is what makes them checks
 rather than circular reinforcement.
 
+Every gate runs on Stage B's batch JSON joined to datatracker metadata, before or
+independently of loading into reef. None of them needs reef to exist, so W13 is not
+blocked on Q1 — which matters, because a gate failure should be caught before anything
+is written to the system of record.
+
 ## 11. Running Stage B (W12, W15)
 
 - 25 records per call, ~393 calls. Frozen `tags.yaml` in the system prompt on every call,
@@ -242,44 +315,53 @@ rather than circular reinforcement.
 - Order batches by RFC number so a reviewer sees coherent runs of related documents.
 - Validate every response against the closed vocabulary before writing. A tag id outside
   `tags.yaml` is a failed batch, not a new tag — re-run once, then route to review.
-- Write batch JSON as the reviewable artefact; load to `Document.rfc_tags` with the
-  management command, so a batch is re-runnable and revertible. Do not write the DB from
-  the model call.
-- **Per-publication tagging** hooks the RPC publication path, not a cron over the index.
-  `ietf/api/serializers_rpc.py` creates the RFC and its `published_rfc` event inside
-  `transaction.atomic()`. Tag in a Celery task **after that transaction commits** — an
-  LLM call must never hold a write transaction or be able to fail a publication — and
-  before the subscriber notification fires, or the first mail for a new RFC carries no
-  tags. Mirror `ietf/community/tasks.py`.
+- Write batch JSON as the reviewable artefact, then load into reef with a separate step,
+  so a batch is re-runnable and revertible and a gate failure never reaches the system of
+  record. Never write the store directly from the model call. The exact load format waits
+  on Q1; the batch JSON in §11's schema is stable regardless.
+- **Per-publication tagging** runs the same Prompt B against the frozen vocabulary with a
+  batch of 1. That identity is the point — it is what keeps new RFCs consistent with the
+  back catalogue — and it holds whoever invokes it, which is Q3.
+- Wherever it runs, two constraints hold. An LLM call must never sit inside the
+  publication transaction or be able to fail a publication: in the datatracker the RFC and
+  its `published_rfc` event are created inside `transaction.atomic()` in
+  `ietf/api/serializers_rpc.py`, so any tagging happens after commit. And the tags must
+  land before reef notifies subscribers, or the first notification for a new RFC carries
+  none.
 
-## 12. Implementation notes for this codebase
+## 12. Implementation notes
 
-- **A new `ietf.doc` model needs a Tastypie resource.** Registering `RfcTagName` and the
-  M2M in `ietf/name/resources.py` and `ietf/doc/resources.py` is not optional — omitting
-  it turns CI red while the feature's own tests stay green. Copy `DocTagNameResource`
-  (`ietf/name/resources.py:52`).
-- **Run whole test modules, not single-method labels.** `ietf/community/tests.py`,
-  `ietf/doc/tests.py`.
-- `ietf/community/tests.py` already covers `notify_event_to_subscribers` and its task
-  wrapper. Extend those when the D9 guard changes and add a case asserting that an RFC
-  `published_rfc` event notifies.
-- Load the frozen vocabulary as a **data migration**, so `tags.yaml`'s `version` is
-  tracked in schema history and the "bump version, re-tag only changed tags" rule has an
-  anchor.
-- Add an `RfcTagName` factory in `ietf/doc/factories.py`.
+Reef owns the store (D6), so this plan writes little datatracker code. What it does write
+is read-only extraction (W2) plus scripts (`baseline.py`, the W3 seed generator), which
+need no models, no migrations and no API resources.
+
+- **Version the vocabulary in reef**, since that is where it lives. `tags.yaml` carries
+  `version`; reef needs to record which version produced a given tag→RFC map, or the
+  "bump version, re-tag only what changed" rule in §13 has nothing to compare against.
+- **If Q2 turns out to require datatracker storage** — a hint field, a cached map — then
+  two things apply that are easy to miss: a new `ietf.doc` model needs a Tastypie resource
+  registered (`ietf/name/resources.py:52` is the template; omitting it turns CI red while
+  the feature's own tests stay green), and the datatracker's test runner needs whole
+  module labels, not single-method ones.
+- **Do not extend `ietf/community/tests.py` or its notification path.** Per D9 that code
+  is not in scope, and a test asserting RFC events notify community-list subscribers would
+  encode the wrong architecture.
 
 ## 13. After launch
 
 `proposed_tags` accumulates the vocabulary's real gaps from live traffic. Batch them for
-periodic review rather than acting on them singly. When the vocabulary changes, bump
-`version` in `tags.yaml` and re-run Stage B **only** for tags that were added, split or
-redefined — a full re-tag churns every subscriber's feed.
+periodic review rather than acting on them singly. New tags are created in reef (D6), so
+the review cycle ends there, not in this repo.
+
+When the vocabulary changes, bump `version` in `tags.yaml` and re-run Stage B **only** for
+tags that were added, split or redefined — a full re-tag churns every subscriber's feed.
+That selective re-tag needs reef to know which version tagged what; see §12.
 
 Extending tags to Internet-Drafts is the obvious follow-on request. Drafts, authors and
 document history are all reachable from the same ORM; the record schema in §6 is the
 piece that would need revisiting.
 
-## 14. File inventory
+## 14. File inventory and artifact flow
 
 | File | Role |
 |---|---|
@@ -288,6 +370,24 @@ piece that would need revisiting.
 | `prompt-a2-inductive-taxonomy.md` | W6 — vocabulary induced from the 1,200-record sample, structure stripped |
 | `prompt-a3-reconcile.md` | W7 — reconciles A1 and A2 into frozen `tags.yaml` |
 | `prompt-b-tag-batch.md` | W12, W15 — tags 25 RFCs per call; also the per-publication tagger |
-| `seed/structure.md` | W3 → A1 |
-| `seed/keywords.md`, `seed/keywords-full.json` | W3 → A3, naming only |
-| `archive/` | Superseded working notes, kept for provenance |
+| `baseline.py` | W0 — re-measures every figure in §4. Invocation in §3 |
+| `baseline-<date>.json` | W0 output, one per environment snapshot |
+| `seed/structure.md` | W3 → A1. **Stale**: mirror-derived, no charters |
+| `seed/keywords.md`, `seed/keywords-full.json` | W3 → A3, naming only. **Stale**: mirror-derived |
+| `seed/build-seed.py` | Superseded mirror-based generator; reference shape for the W3 rewrite |
+| `archive/` | Superseded working notes. Git-ignored, local only — not in the remote |
+
+Execution runs in the container; this repo is how its output reaches reviewers. Push the
+artefacts that carry a judgement, keep the bulk local:
+
+| Artefact | Stage | Pushed for review? |
+|---|---|---|
+| `baseline-<date>.json` | W0 | yes — small, and it dates every figure in §4 |
+| `records.jsonl` | W2 | no — ~9,800 records, and regenerable from the ORM in one pass |
+| `sample-a2-rfc-numbers.txt` | W4 | yes — the committed sample identity, needed for reproducibility |
+| `sample-a2.json` | W4 | no — regenerable from the numbers plus the snapshot date |
+| `vocab-s.yaml`, `vocab-i.yaml` | W5, W6 | yes — A3's adjudication is only checkable against both inputs |
+| `tags.yaml` | W7, W8 | **yes — this is what gate 1 reviews** |
+| `gold.json` | W10 | yes — small, human-made, and the reference every later score depends on |
+| `tags-batch-*.json` | W12 | no — ~393 files; reef is the destination and gate reports are the readable summary |
+| Gate reports | W13 | yes |

@@ -1,5 +1,12 @@
 # Empirical structure of the RFC corpus
 
+> **STALE — superseded at W3.** Generated from the retired static corpus mirror
+> (`../rfc/rfc-index.xml` plus the per-RFC JSON), which is no longer an input to this
+> plan. The counts below predate the datatracker-derived figures in `README.md` §4, and
+> `structure.md` carries no charter excerpts, group type or group state. Regenerate from
+> the datatracker per `README.md` §8 before running Prompt A1 or A3. Kept for reference
+> only; do not feed these files to a model as they stand.
+
 Joined from `../rfc/rfc-index.xml` (area, stream, working-group acronym) and the
 per-RFC `../rfc/rfcNNNN.json` files (`source` — the working group's **full name**,
 100% coverage). Counts are published documents; not-issued numbers are excluded.

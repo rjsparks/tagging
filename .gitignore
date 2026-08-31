@@ -1,2 +1,8 @@
 HANDOFF.md
 archive
+
+# Execution outputs: produced in the datatracker container, bulky, and regenerable.
+# See README.md §14 for what does get pushed for review.
+records.jsonl
+sample-a2.json
+tags-batch-*.json

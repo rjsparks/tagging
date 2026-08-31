@@ -1,0 +1,194 @@
+{
+  "absent_but_text_available": 700,
+  "abstract_absent": 707,
+  "abstract_by_band": {
+    "1-1499": [
+      746,
+      1430
+    ],
+    "1500-2999": [
+      1481,
+      1498
+    ],
+    "3000-5999": [
+      2920,
+      2926
+    ],
+    "6000-99999": [
+      3974,
+      3974
+    ]
+  },
+  "abstract_present": 9121,
+  "area_resolved": 7597,
+  "area_unresolved": 2231,
+  "area_unresolved_by_stream": {
+    "iab": 11,
+    "ietf": 102,
+    "irtf": 5,
+    "ise": 266,
+    "legacy": 1847
+  },
+  "areas": {
+    "app": 844,
+    "art": 475,
+    "gen": 242,
+    "ietf": 138,
+    "int": 994,
+    "ipng": 2,
+    "irtf": 117,
+    "mgt": 59,
+    "ops": 993,
+    "ops-old": 11,
+    "osi": 4,
+    "rai": 465,
+    "rfceditor": 3,
+    "rtg": 1416,
+    "sec": 991,
+    "sub": 23,
+    "tsv": 407,
+    "usv": 34,
+    "wit": 379
+  },
+  "charters": {
+    "full_tokens_approx": 378031,
+    "groups_with_charter_text": 544,
+    "truncated_tokens_approx": 104325
+  },
+  "decades": {
+    "1960": 26,
+    "1970": 666,
+    "1980": 376,
+    "1990": 1593,
+    "2000": 2888,
+    "2010": 2954,
+    "2020": 1325
+  },
+  "group_states": {
+    "active": 117,
+    "bof-conc": 1,
+    "conclude": 454
+  },
+  "groups_with_one_rfc": 92,
+  "groups_with_ten_plus": 173,
+  "keywords": {
+    "at_least_20": 200,
+    "distinct_folded": 10567,
+    "documents": 7423,
+    "hapax": 7281,
+    "instances": 29640,
+    "top": [
+      [
+        "protocol",
+        420
+      ],
+      [
+        "internet",
+        326
+      ],
+      [
+        "security",
+        251
+      ],
+      [
+        "mib",
+        228
+      ],
+      [
+        "management information base",
+        198
+      ],
+      [
+        "authentication",
+        186
+      ],
+      [
+        "ipv6",
+        173
+      ],
+      [
+        "management",
+        156
+      ]
+    ]
+  },
+  "neither_abstract_nor_text": [
+    8,
+    9,
+    51,
+    418,
+    500,
+    530,
+    598
+  ],
+  "no_abstract_and_no_area": 706,
+  "no_abstract_and_no_real_group": 706,
+  "no_real_group_breakdown": {
+    "area": 1003,
+    "ietf": 138,
+    "individ": 2231
+  },
+  "no_real_group_docs": 3372,
+  "publications_by_year_recent": {
+    "2021": 240,
+    "2022": 194,
+    "2023": 173,
+    "2024": 175,
+    "2025": 208
+  },
+  "publications_per_year_mean_5y": 198.0,
+  "real_group_count": 558,
+  "real_group_docs": 6456,
+  "real_group_top": [
+    [
+      "mpls",
+      197
+    ],
+    [
+      "idr",
+      116
+    ],
+    [
+      "avt",
+      115
+    ],
+    [
+      "ccamp",
+      112
+    ],
+    [
+      "dhc",
+      108
+    ],
+    [
+      "tsvwg",
+      93
+    ]
+  ],
+  "relations": {
+    "obs": 1543,
+    "updates": 2156
+  },
+  "rfc_count": 9828,
+  "rfc_path": "/assets/ietf-ftp/rfc/",
+  "rfc_path_populated": 9821,
+  "snapshot_date": "2026-08-19",
+  "status": {
+    "bcp": 336,
+    "ds": 138,
+    "exp": 557,
+    "hist": 353,
+    "inf": 3006,
+    "ps": 4419,
+    "std": 132,
+    "unkn": 887
+  },
+  "streams": {
+    "editorial": 3,
+    "iab": 134,
+    "ietf": 7236,
+    "irtf": 127,
+    "ise": 435,
+    "legacy": 1893
+  }
+}
